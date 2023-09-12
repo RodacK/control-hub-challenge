@@ -1,0 +1,9 @@
+plugins {
+    id("com.github.johnrengelman.shadow")
+    id("io.micronaut.library")
+}
+
+dependencies {
+    implementation project(':models')
+}
+

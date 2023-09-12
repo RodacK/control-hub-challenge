@@ -1,0 +1,53 @@
+plugins {
+    id("com.github.johnrengelman.shadow") version "7.0.0"
+    id("io.micronaut.library") version "1.2.0"
+}
+
+repositories {
+    mavenCentral()
+}
+
+subprojects {
+    repositories {
+        mavenCentral()
+    }
+}
+dependencies {
+    implementation project(':lambda-fibonacci')
+}
+
+
+allprojects {
+    pluginManager.withPlugin('io.micronaut.library') {
+        dependencies {
+            implementation("io.micronaut.aws:micronaut-function-aws:$micronautVersion")
+            implementation("io.micronaut:micronaut-validation:$micronautVersion")
+            implementation("io.micronaut:micronaut-runtime:$micronautVersion")
+            implementation("javax.annotation:javax.annotation-api")
+            runtimeOnly("ch.qos.logback:logback-classic")
+            testImplementation("io.micronaut:micronaut-http-client:$micronautVersion")
+            testImplementation group: 'org.mockito', name: 'mockito-junit-jupiter', version: '3.7.7'
+        }
+        micronaut {
+            testRuntime("junit5")
+        }
+    }
+    pluginManager.withPlugin('java') {
+        dependencies {
+            implementation "io.micronaut:micronaut-core:$micronautVersion"
+            implementation group: 'javax.validation', name: 'validation-api', version: '2.0.1.Final'
+            implementation "org.projectlombok:lombok:$lombokVersion"
+            annotationProcessor "org.projectlombok:lombok:$lombokVersion"
+            testImplementation "org.projectlombok:lombok:$lombokVersion"
+            testAnnotationProcessor "org.projectlombok:lombok:$lombokVersion"
+        }
+    }
+}
+
+java {
+    sourceCompatibility = JavaVersion.toVersion("11")
+    targetCompatibility = JavaVersion.toVersion("11")
+}
+
+
+
