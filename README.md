@@ -20,3 +20,5 @@ Coldstart could be improved by separating modules to the AWS layers and also eli
 
 The use of a pojo as input or output could also be improved in the future and better use APIGatewayProxyRequestEvent and APIGatewayProxyResponseEvent
 to directly obtain headers, query params and others in the lambda, without needing to transform the data in the apigateway
+
+Security could be added as jwt
