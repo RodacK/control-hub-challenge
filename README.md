@@ -1,64 +1,22 @@
 Por fin terminado :')
-Esta es la collection para probar:
 
-    https://www.getpostman.com/collections/38bc8a7767107eb64fca
+the request:
 
-apidoc.json   => Es la definicion de los endpoints, codigos http y templates para mapear requests y responses
-
-lambdas.yml   => Es una definicion SAM de las lambdas que se desplegaron
-
-policies.json => Son todos los permisos y roles que se le dieron a las lambdas 
-
-Nota: Se creó una tabla en DynamoDB llamada satellites-info para alamacenar los satelites a guardar
-
-Para crear la lambda en go desde cero:
+    curl --location 'https://flewoiz100.execute-api.us-east-2.amazonaws.com/prod/fibonacci' \
+    --header 'Content-Type: application/json' \
+    --data '{"index":6}'
 
 
-1. Actualizar o instalar golang
+apidoc.json => It is the definition of the endpoints, http codes and templates to map requests and responses
 
-- Linux  o Mac
+lambdas.yml => It is a SAM definition of the lambdas that were deployed
 
-        git clone https://github.com/udhos/update-golang
-        cd update-golang
-        sudo ./update-golang.sh
-  
-- Windows
-  
-        https://chocolatey.org/packages/golang
+A lambda is created to save costs and not have the service active 24/7 and an apiGateway is configured so that it can map the requests, responses and errors to and from the lambda
+In the future you can create your own proxy like nginx to have a central repository with the definitions of paths and http codes
+You could also migrate the main logic to a microservice and configure its deployment file
 
-2. Obtener dependenecias
-   
-        sudo go get -v all
+It is created with the micronaut framework because it is widely used or has modules to create lambda functions
+Coldstart could be improved by separating modules to the AWS layers and also eliminating unnecessary modules after compilation like lombok
 
-3. Compilar
-   
-- Linux o Mac
-  
-        GOOS=linux go build -o ./build/main ./function/main.go
-
-- Windows con powershell
-
-        $Env:GOOS = "linux"; $Env:GOARCH = "amd64"; go build -o .\build\main .\function\main.go
-
-4. Hacer un zip
-
-- Linux o Mac
-
-        zip -jrm ./build/main.zip ./build/main
-
-- Windows
-  
-    - Darle permisos de ejecucion (Esto es teniendo en cuenta que se configuro WSL2 y la maquina virtual previamente)
-
-            sudo chmod 777 build/main  
-      
-    - Despues con powershell
-
-            Compress-Archive -Path .\build\main -DestinationPath .\build\main.zip
-  
-
-
-5. configurar la consola 
-   
-- Configurar el handler con: main
-
+The use of a pojo as input or output could also be improved in the future and better use APIGatewayProxyRequestEvent and APIGatewayProxyResponseEvent
+to directly obtain headers, query params and others in the lambda, without needing to transform the data in the apigateway
